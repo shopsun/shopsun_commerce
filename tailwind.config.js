@@ -11,6 +11,7 @@ module.exports = {
         "white-pastel": "#FEFBF3",
         "chocolate-pastel": "#F8F0DF",
         "gray-pastel": "#9D9D9D",
+        "black-soft": "#212121",
       },
     },
   },

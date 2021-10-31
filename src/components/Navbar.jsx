@@ -7,7 +7,6 @@ function Navbar() {
   const location = useLocation();
   let history = useHistory();
 
-  console.log(location.pathname);
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
