@@ -48,7 +48,7 @@ const Cart = () => {
               {cartItem.category}
             </span>
             <p className="mt-5 text-black-soft">
-              ${cartItem.price * cartItem.qty}
+              ${(cartItem.price * cartItem.qty).toFixed(2)}
             </p>
           </div>
           <div className="sm:justify-self-center self-center sm:self-start ">
@@ -124,7 +124,7 @@ const Cart = () => {
                 </h4>
                 <div className="lg:text-sm border-b-2 border-gray-200 self-center py-4 text-gray-600 flex justify-between">
                   <span>Subtotal </span>
-                  <span>${calculeTotal}</span>
+                  <span>${calculeTotal.toFixed(2)}</span>
                 </div>
                 <div className="lg:text-sm border-b-2 border-gray-200 self-center py-4 text-gray-600 flex justify-between">
                   <span>Tax </span>
@@ -136,7 +136,7 @@ const Cart = () => {
                 </div>
                 <div className="text-md font-semibold self-center py-4 text-black-soft flex justify-between">
                   <span>Order Total </span>
-                  <span>${total}</span>
+                  <span>${total.toFixed(2)}</span>
                 </div>
                 <button className="bg-green-400 py-2 text-white text-lg lg:text-xl font-light rounded-lg">
                   Checkout
