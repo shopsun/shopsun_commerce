@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Transition } from "@headlessui/react";
+import { useSelector } from "react-redux";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   let history = useHistory();
+
+  const state = useSelector((state) => state.handleCart);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -31,8 +34,7 @@ function Navbar() {
                         ? "text-white bg-blue-pastel scale-110"
                         : ""
                     }`}
-                    onClick={() => history.push("/home")}
-                  >
+                    onClick={() => history.push("/home")}>
                     Home
                   </button>
                 </li>
@@ -41,8 +43,7 @@ function Navbar() {
                 <li>
                   <button
                     className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
-                    onClick={() => history.push("/about")}
-                  >
+                    onClick={() => history.push("/about")}>
                     Login
                   </button>
                 </li>
@@ -50,27 +51,30 @@ function Navbar() {
                 {/* Tinggal ganti sesuai pathname Cart */}
                 <li>
                   <button
-                    className={` transition-color transition-transform transform hover:scale-110 px-2 py-2 text-sm hover:bg-blue-pastel rounded-full hover:text-white font-bold ${
-                      location.pathname === "/about"
-                        ? "text-white bg-blue-pastel scale-110"
-                        : ""
-                    }`}
-                    onClick={() => history.push("/about")}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
+                    className={` inline-flex items-center transition-color transition-transform transform hover:scale-110 px-2 py-2 text-sm hover:bg-blue-pastel rounded-full hover:text-white font-bold`}
+                    onClick={() => history.push("/cart")}>
+                    <span className="relative inline-block ">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                        />
+                      </svg>
+                      {state.length === 0 ? (
+                        <span></span>
+                      ) : (
+                        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                          {state.length}
+                        </span>
+                      )}
+                    </span>
                   </button>
                 </li>
               </ul>
@@ -80,8 +84,7 @@ function Navbar() {
             <button
               className="inline-flex items-center justify-center p-2 rounded-md text-blue-pastel hover:font-bold  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-pastel focus:ring-white"
               onClick={handleClick}
-              type="button"
-            >
+              type="button">
               <span className="sr-only">Open main menu</span>
               {!isOpen ? (
                 <svg
@@ -90,8 +93,7 @@ function Navbar() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  aria-hidden="true"
-                >
+                  aria-hidden="true">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -106,8 +108,7 @@ function Navbar() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  aria-hidden="true"
-                >
+                  aria-hidden="true">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -127,14 +128,12 @@ function Navbar() {
         enterTo="opacity-100 scale-100"
         leave="transition ease-in duration-75 transform"
         leaveFrom="opacity-100 scale-100"
-        leaveTo="opacity-0 scale-95"
-      >
+        leaveTo="opacity-0 scale-95">
         {(ref) => (
           <div className="md:hidden" id="mobile-menu">
             <ul
               ref={ref}
-              className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-blue-pastel"
-            >
+              className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-blue-pastel">
               {/* Tinggal ganti sesuai pathname Home */}
               <li>
                 <button
@@ -143,8 +142,7 @@ function Navbar() {
                       ? "text-white bg-blue-pastel"
                       : ""
                   }`}
-                  onClick={() => history.push("/home")}
-                >
+                  onClick={() => history.push("/home")}>
                   Home
                 </button>
               </li>
@@ -157,8 +155,7 @@ function Navbar() {
                       ? "text-white bg-blue-pastel"
                       : ""
                   }`}
-                  onClick={() => history.push("/about")}
-                >
+                  onClick={() => history.push("/about")}>
                   Cart
                 </button>
               </li>
@@ -171,8 +168,7 @@ function Navbar() {
                       ? "text-white bg-blue-pastel"
                       : ""
                   }`}
-                  onClick={() => history.push("/experience")}
-                >
+                  onClick={() => history.push("/experience")}>
                   Login
                 </button>
               </li>

@@ -10,6 +10,7 @@ import {
 import Navbar from "./components/Navbar";
 import ProductsListing from "./components/Products/ProductsListing";
 import ProductDetails from "./components/Products/ProductDetails";
+import Cart from "./components/Cart/Cart";
 /* list component yang belum :
 1.products details
 2.home
@@ -17,14 +18,18 @@ import ProductDetails from "./components/Products/ProductDetails";
 4.chart
 5.admin page
 */
+
 function App() {
   return (
     <Router>
       <div className="w-full h-screen">
         <Navbar />
-        <Route exact path="/" component={ProductsListing} />
-        <Route path="/product/:productId" component={ProductDetails} />
-        <Redirect from="*" to="/" />
+        <Switch>
+          <Route exact path="/product" component={ProductsListing} />
+          <Route path="/product/:productId" component={ProductDetails} />
+          <Route path="/cart" component={Cart} />
+          <Redirect from="*" to="/product" />
+        </Switch>
       </div>
     </Router>
   );

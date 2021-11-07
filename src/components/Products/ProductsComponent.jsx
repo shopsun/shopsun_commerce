@@ -1,11 +1,20 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
+import { addCart } from "../../redux/action";
 
-const ProductsComponent = () => {
-  const products = useSelector((state) => state.products);
+const ProductsComponent = ({ dataProduct }) => {
+  // const products = useSelector((state) => state.products);
+  const dispatch = useDispatch();
+  const products = dataProduct;
   const history = useHistory();
+
+  const addProduct = (product) => {
+    dispatch(addCart(product));
+  };
+
   const renderList = products.map((product) => {
+    console.log(product);
     const { id, title, price, image, category } = product;
     return (
       <div className="group relative pb-14" key={id}>
@@ -35,7 +44,9 @@ const ProductsComponent = () => {
             onClick={() => history.push(`/product/${id}`)}>
             Details
           </button>
-          <button className="font-bold px-3 py-2 mt-2 bg-green-500 text-white text-lg rounded-md">
+          <button
+            className="font-bold px-3 py-2 mt-2 bg-green-500 text-white text-lg rounded-md"
+            onClick={() => addProduct(product)}>
             Add to Cart
           </button>
         </div>
