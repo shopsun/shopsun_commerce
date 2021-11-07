@@ -1,15 +1,41 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Transition } from "@headlessui/react";
+import {USER_TOKEN} from '../../src/token'
+import {ADMIN_TOKEN} from '../../src/token'
 
 function Navbar() {
+  const token = localStorage.getItem('token');
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isUser, setIsUser] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [hotReload, setHotReload] = useState(false);
   const location = useLocation();
   let history = useHistory();
 
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
+
+
+  // useEffect(() => {
+  //   (() => {
+  //     const token = localStorage.getItem('token');
+  //     debugger
+  //     if (token === USER_TOKEN) {
+  //       setIsUser(true);
+  //       setIsAdmin(false);
+  //     } else if (token === ADMIN_TOKEN) {
+  //       setIsUser(false);
+  //       setIsAdmin(true);
+  //     } else {
+  //       setIsUser(false);
+  //       setIsAdmin(false);
+  //     }
+  //   })();
+  // }, [hotReload]);
+
+
 
   return (
     <nav className="bg-white md:w-5/6 md:mx-auto rounded-xl z-10 md:mt-5 sticky">
@@ -27,27 +53,60 @@ function Navbar() {
                 <li>
                   <button
                     className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
-                      location.pathname === "/home"
+                      location.pathname === "/"
                         ? "text-white bg-blue-pastel scale-110"
                         : ""
                     }`}
-                    onClick={() => history.push("/home")}
+                    onClick={() => history.push("/")}
                   >
                     Home
                   </button>
                 </li>
                 &nbsp;
+                 {/* Tinggal ganti sesuai pathname Rekap Penjualan */}
+                 {(token === ADMIN_TOKEN) &&
+                 <li>
+                  <button
+                    className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
+                      location.pathname === "/rekap"
+                        ? "text-white bg-blue-pastel scale-110"
+                        : ""
+                    }`}
+                    onClick={() => history.push("/rekap")}
+                  >
+                    Rekap Penjualan
+                  </button>
+                </li>}
+                &nbsp;
                 {/* Tinggal ganti sesuai pathname Login */}
+                {(token === USER_TOKEN)  || (token === ADMIN_TOKEN) ? 
+                <li>
+                <button
+                className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
+                onClick={() => { 
+                  localStorage.removeItem('token')
+                  history.push("/")
+                  setHotReload(!hotReload)
+                }}
+              >
+                Logout
+              </button>
+            </li> :
                 <li>
                   <button
                     className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
-                    onClick={() => history.push("/about")}
+                    onClick={() =>{
+                    history.push("/login")
+                    setHotReload(!hotReload)
+                  }}
                   >
                     Login
                   </button>
                 </li>
+                }
                 &nbsp;
                 {/* Tinggal ganti sesuai pathname Cart */}
+                {(token === USER_TOKEN) &&
                 <li>
                   <button
                     className={` transition-color transition-transform transform hover:scale-110 px-2 py-2 text-sm hover:bg-blue-pastel rounded-full hover:text-white font-bold ${
@@ -72,7 +131,7 @@ function Navbar() {
                       />
                     </svg>
                   </button>
-                </li>
+                </li>}
               </ul>
             </div>
           </div>
@@ -150,6 +209,7 @@ function Navbar() {
               </li>
               &nbsp;
               {/* Tinggal ganti sesuai pathname Cart */}
+              {(token === USER_TOKEN) &&
               <li>
                 <button
                   className={`hover:bg-blue-pastel hover:text-white transition-colors duration-300  px-3 py-2 rounded-md text-base font-medium w-full ${
@@ -161,21 +221,31 @@ function Navbar() {
                 >
                   Cart
                 </button>
-              </li>
+              </li>}
               &nbsp;
               {/* Tinggal ganti sesuai pathname Login */}
-              <li>
+              {isAdmin  || isUser ? 
+                <li>
                 <button
-                  className={`hover:bg-blue-pastel hover:text-white transition-colors duration-300  px-3 py-2 rounded-md text-base font-medium w-full ${
-                    location.pathname === "/experience"
-                      ? "text-white bg-blue-pastel"
-                      : ""
-                  }`}
-                  onClick={() => history.push("/experience")}
-                >
-                  Login
-                </button>
-              </li>
+                className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
+                onClick={() => { 
+                  localStorage.removeItem('token')
+                  history.push("/")
+                }}
+              >
+                Logout
+              </button>
+            </li> :
+                <li>
+                  <button
+                    className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
+                    onClick={() => history.push("/login")}
+                  >
+                    Login
+                  </button>
+                </li>
+                }
+                &nbsp;
             </ul>
           </div>
         )}

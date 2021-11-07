@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,8 +8,11 @@ import {
   useHistory,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import LoginForm from "./components/LoginForm"
 import ProductsListing from "./components/Products/ProductsListing";
 import ProductDetails from "./components/Products/ProductDetails";
+import UpdateStock from "./components/admin/UpdateStok";
+import Rekap from "./components/admin/Rekap";
 /* list component yang belum :
 1.products details
 2.home
@@ -18,10 +21,14 @@ import ProductDetails from "./components/Products/ProductDetails";
 5.admin page
 */
 function App() {
+
   return (
     <Router>
       <div className="w-full h-screen">
         <Navbar />
+        <Route exact path="/update" component={UpdateStock}/>
+        <Route exact path="/rekap" component={Rekap}/>
+        <Route exact path="/login" component={LoginForm} />
         <Route exact path="/" component={ProductsListing} />
         <Route path="/product/:productId" component={ProductDetails} />
         <Redirect from="*" to="/" />
