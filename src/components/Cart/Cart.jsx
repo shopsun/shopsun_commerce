@@ -5,9 +5,11 @@ import { useHistory } from "react-router-dom";
 
 const Cart = () => {
   const state = useSelector((state) => state.handleCart);
+  const stateStock = useSelector((state) => state.handleProduct.product);
   const dispatch = useDispatch();
   let history = useHistory();
   let totalQty = 0;
+  const [isDisable, setIsDisable] = useState(false);
   // const [value, setValue] = useState(0);
   const calculeTotal = state.reduce((sum, i) => sum + i.qty * i.price, 0);
   const tempTax = calculeTotal * 0.1;
@@ -29,9 +31,17 @@ const Cart = () => {
   // const handleValueChange = (item) => {
   //   setValue(item);
   // };
-
+  // console.log(stateStock.length);
   const cartItems = (cartItem) => {
     totalQty += cartItem.qty;
+    // for (var count = 0; count < max.length; count++) {
+    //   if (cartItem.id == max[count].id && cartItem.qty == max[count].qty) {
+    //     return setIsDisable(true);
+    //   }
+    // console.log(max[count]);
+    // }
+    // if (cartItem.id == stateStock.id) {
+    // }
     return (
       <div
         className="flex p-5 gap-6 border-t-2 border-gray-100 mb-5"
@@ -62,13 +72,19 @@ const Cart = () => {
               type="text"
               className=" h-6 w-6 lg:h-7 lg:w-7 text-center my-2 sm:mx-1"
               value={cartItem.qty}
+              readOnly
             />
             <button
               type="button"
               className=" h-6 w-6 lg:h-7 lg:w-7 text-center"
-              onClick={() => handleAdd(cartItem)}>
+              onClick={() => handleAdd(cartItem)}
+              disabled={isDisable}>
               +
             </button>
+          </div>
+          <div>
+            <span>Stock</span>
+            {/* <input className="w-8 h-8" /> */}
           </div>
           <button
             type="button"

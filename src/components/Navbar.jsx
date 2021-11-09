@@ -1,12 +1,12 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Transition } from "@headlessui/react";
-import {USER_TOKEN} from '../../src/token'
-import {ADMIN_TOKEN} from '../../src/token'
+import { USER_TOKEN } from "../../src/token";
+import { ADMIN_TOKEN } from "../../src/token";
 import { useSelector } from "react-redux";
 
 function Navbar() {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const [isAdmin, setIsAdmin] = useState(false);
   const [isUser, setIsUser] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +19,6 @@ function Navbar() {
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
-
 
   // useEffect(() => {
   //   (() => {
@@ -38,8 +37,6 @@ function Navbar() {
   //   })();
   // }, [hotReload]);
 
-
-
   return (
     <nav className="bg-white md:w-5/6 md:mx-auto rounded-xl z-10 md:mt-5 sticky">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,89 +53,91 @@ function Navbar() {
                 <li>
                   <button
                     className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
-                      location.pathname === "/"
+                      location.pathname === "/product"
                         ? "text-white bg-blue-pastel scale-110"
                         : ""
                     }`}
-
-                    onClick={() => history.push("/")}
-                  >
+                    onClick={() => history.push("/product")}>
                     Home
                   </button>
                 </li>
                 &nbsp;
-                 {/* Tinggal ganti sesuai pathname Rekap Penjualan */}
-                 {(token === ADMIN_TOKEN) &&
-                 <li>
-                  <button
-                    className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
-                      location.pathname === "/rekap"
-                        ? "text-white bg-blue-pastel scale-110"
-                        : ""
-                    }`}
-                    onClick={() => history.push("/rekap")}
-                  >
-                    Rekap Penjualan
-                  </button>
-                </li>}
+                {/* Tinggal ganti sesuai pathname Rekap Penjualan */}
+                {token === ADMIN_TOKEN && (
+                  <li>
+                    <button
+                      className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
+                        location.pathname === "/rekap"
+                          ? "text-white bg-blue-pastel scale-110"
+                          : ""
+                      }`}
+                      onClick={() => history.push("/rekap")}>
+                      Rekap Penjualan
+                    </button>
+                  </li>
+                )}
                 &nbsp;
                 {/* Tinggal ganti sesuai pathname Login */}
-                {(token === USER_TOKEN)  || (token === ADMIN_TOKEN) ? 
-                <li>
-                <button
-                className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
-                onClick={() => { 
-                  localStorage.removeItem('token')
-                  history.push("/")
-                  setHotReload(!hotReload)
-                }}
-              >
-                Logout
-              </button>
-            </li> :
-                <li>
-                  <button
-                    className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
-                    onClick={() =>{
-                    history.push("/login")
-                    setHotReload(!hotReload)
-                  }}
-                  >
-                    Login
-                  </button>
-                </li>
-                }
+                {token === USER_TOKEN || token === ADMIN_TOKEN ? (
+                  <li>
+                    <button
+                      className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
+                      onClick={() => {
+                        localStorage.removeItem("token");
+                        history.push("/");
+                        setHotReload(!hotReload);
+                      }}>
+                      Logout
+                    </button>
+                  </li>
+                ) : (
+                  <li>
+                    <button
+                      className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
+                        location.pathname === "/login"
+                          ? "text-white bg-blue-pastel scale-110"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        history.push("/login");
+                        setHotReload(!hotReload);
+                      }}>
+                      Login
+                    </button>
+                  </li>
+                )}
                 &nbsp;
                 {/* Tinggal ganti sesuai pathname Cart */}
-                {(token === USER_TOKEN) &&
-                <li>
-                  <button
-                    className={` inline-flex items-center transition-color transition-transform transform hover:scale-110 px-2 py-2 text-sm hover:bg-blue-pastel rounded-full hover:text-white font-bold`}
-                    onClick={() => history.push("/cart")}>
-                    <span className="relative inline-block ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                        />
-                      </svg>
-                      {state.length === 0 ? (
-                        <span></span>
-                      ) : (
-                        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                          {state.length}
-                        </span>
-                      )}
-                    </span>
-                  </button>
-                </li>}
+                {token === USER_TOKEN && (
+                  <li>
+                    <button
+                      className={` inline-flex items-center transition-color transition-transform transform hover:scale-110 px-2 py-2 text-sm hover:bg-blue-pastel rounded-full hover:text-white font-bold`}
+                      onClick={() => history.push("/cart")}>
+                      <span className="relative inline-block ">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
+                        </svg>
+                        {state.length === 0 ? (
+                          <span></span>
+                        ) : (
+                          <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                            {state.length}
+                          </span>
+                        )}
+                      </span>
+                    </button>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -200,53 +199,56 @@ function Navbar() {
               <li>
                 <button
                   className={`hover:bg-blue-pastel hover:text-white transition-colors duration-300  px-3 py-2 rounded-md text-base font-medium w-full ${
-                    location.pathname === "/home"
+                    location.pathname === "/product"
                       ? "text-white bg-blue-pastel"
                       : ""
                   }`}
-                  onClick={() => history.push("/home")}>
+                  onClick={() => history.push("/product")}>
                   Home
                 </button>
               </li>
               &nbsp;
               {/* Tinggal ganti sesuai pathname Cart */}
-              {(token === USER_TOKEN) &&
-              <li>
-                <button
-                  className={`hover:bg-blue-pastel hover:text-white transition-colors duration-300  px-3 py-2 rounded-md text-base font-medium w-full ${
-                    location.pathname === "/about"
-                      ? "text-white bg-blue-pastel"
-                      : ""
-                  }`}
-                  onClick={() => history.push("/about")}>
-                  Cart
-                </button>
-              </li>}
+              {token === USER_TOKEN && (
+                <li>
+                  <button
+                    className={`hover:bg-blue-pastel hover:text-white transition-colors duration-300  px-3 py-2 rounded-md text-base font-medium w-full ${
+                      location.pathname === "/cart"
+                        ? "text-white bg-blue-pastel"
+                        : ""
+                    }`}
+                    onClick={() => history.push("/cart")}>
+                    Cart
+                  </button>
+                </li>
+              )}
               &nbsp;
               {/* Tinggal ganti sesuai pathname Login */}
-              {isAdmin  || isUser ? 
-                <li>
-                <button
-
-                className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
-                onClick={() => { 
-                  localStorage.removeItem('token')
-                  history.push("/")
-                }}
-              >
-                Logout
-              </button>
-            </li> :
+              {isAdmin || isUser ? (
                 <li>
                   <button
                     className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
-                    onClick={() => history.push("/login")}
-                  >
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      history.push("/");
+                    }}>
+                    Logout
+                  </button>
+                </li>
+              ) : (
+                <li>
+                  <button
+                    className={`hover:bg-blue-pastel hover:text-white transition-colors duration-300  px-3 py-2 rounded-md text-base font-medium w-full ${
+                      location.pathname === "/login"
+                        ? "text-white bg-blue-pastel"
+                        : ""
+                    }`}
+                    onClick={() => history.push("/login")}>
                     Login
                   </button>
                 </li>
-                }
-                &nbsp;
+              )}
+              &nbsp;
             </ul>
           </div>
         )}

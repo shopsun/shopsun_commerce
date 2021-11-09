@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import ProductsComponent from "./ProductsComponent";
 import Skeleton from "react-loading-skeleton";
+import { addProduct } from "../../redux/action";
 
 const ProductsListing = () => {
-  // const state = useSelector((state) => state);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  // const dispatch = useDispatch();
+  const state = useSelector((state) => state.handleProduct.product);
+  const dispatch = useDispatch();
   let componentMounted = true;
 
   // dispatch({
@@ -19,12 +18,22 @@ const ProductsListing = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setLoading(true);
-        const response = await axios.get("https://fakestoreapi.com/products");
-        if (componentMounted) {
-          setData(await response.data);
-          setLoading(false);
-        }
+        await axios
+          .get("https://fakestoreapi.com/products")
+          .then((response) => {
+            // console.log(response.data);
+            const objectData = [];
+            response.data.forEach((element) => {
+              // console.log(element);
+              let newProduct = { ...element, qty: 20 };
+              objectData.push(newProduct);
+            });
+            // console.log(objectData);
+            dispatch(addProduct(objectData));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } catch (error) {
         console.log("Error ", error);
       }
@@ -53,10 +62,10 @@ const ProductsListing = () => {
           Products
         </h2>
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {loading ? (
-            <LoadingSkeleton />
+          {state ? (
+            <ProductsComponent dataProduct={state} />
           ) : (
-            <ProductsComponent dataProduct={data} />
+            <LoadingSkeleton />
           )}
         </div>
       </div>
