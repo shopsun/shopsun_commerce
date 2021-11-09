@@ -5,9 +5,11 @@ import { useHistory } from "react-router-dom";
 
 const Cart = () => {
   const state = useSelector((state) => state.handleCart);
+  const stateStock = useSelector((state) => state.handleProduct.product);
   const dispatch = useDispatch();
   let history = useHistory();
   let totalQty = 0;
+  const [isDisable, setIsDisable] = useState(false);
   // const [value, setValue] = useState(0);
   const calculeTotal = state.reduce((sum, i) => sum + i.qty * i.price, 0);
   const tempTax = calculeTotal * 0.1;
@@ -29,9 +31,17 @@ const Cart = () => {
   // const handleValueChange = (item) => {
   //   setValue(item);
   // };
-
+  // console.log(stateStock.length);
   const cartItems = (cartItem) => {
     totalQty += cartItem.qty;
+    // for (var count = 0; count < max.length; count++) {
+    //   if (cartItem.id == max[count].id && cartItem.qty == max[count].qty) {
+    //     return setIsDisable(true);
+    //   }
+    // console.log(max[count]);
+    // }
+    // if (cartItem.id == stateStock.id) {
+    // }
     return (
       <div
         className="flex p-5 gap-6 border-t-2 border-gray-100 mb-5"
@@ -48,7 +58,7 @@ const Cart = () => {
               {cartItem.category}
             </span>
             <p className="mt-5 text-black-soft">
-              ${cartItem.price * cartItem.qty}
+              ${(cartItem.price * cartItem.qty).toFixed(2)}
             </p>
           </div>
           <div className="sm:justify-self-center self-center sm:self-start ">
@@ -62,13 +72,19 @@ const Cart = () => {
               type="text"
               className=" h-6 w-6 lg:h-7 lg:w-7 text-center my-2 sm:mx-1"
               value={cartItem.qty}
+              readOnly
             />
             <button
               type="button"
               className=" h-6 w-6 lg:h-7 lg:w-7 text-center"
-              onClick={() => handleAdd(cartItem)}>
+              onClick={() => handleAdd(cartItem)}
+              disabled={isDisable}>
               +
             </button>
+          </div>
+          <div>
+            <span>Stock</span>
+            {/* <input className="w-8 h-8" /> */}
           </div>
           <button
             type="button"
@@ -124,7 +140,7 @@ const Cart = () => {
                 </h4>
                 <div className="lg:text-sm border-b-2 border-gray-200 self-center py-4 text-gray-600 flex justify-between">
                   <span>Subtotal </span>
-                  <span>${calculeTotal}</span>
+                  <span>${calculeTotal.toFixed(2)}</span>
                 </div>
                 <div className="lg:text-sm border-b-2 border-gray-200 self-center py-4 text-gray-600 flex justify-between">
                   <span>Tax </span>
@@ -136,7 +152,7 @@ const Cart = () => {
                 </div>
                 <div className="text-md font-semibold self-center py-4 text-black-soft flex justify-between">
                   <span>Order Total </span>
-                  <span>${total}</span>
+                  <span>${total.toFixed(2)}</span>
                 </div>
                 <button className="bg-green-400 py-2 text-white text-lg lg:text-xl font-light rounded-lg">
                   Checkout
