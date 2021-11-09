@@ -1,29 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import ProductsComponent from "./ProductsComponent";
+import Skeleton from "react-loading-skeleton";
 
 const ProductsListing = () => {
-  const state = useSelector((state) => state);
-  const dispatch = useDispatch();
+  // const state = useSelector((state) => state);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  // const dispatch = useDispatch();
+  let componentMounted = true;
 
-  const fetchProducts = async () => {
-    const response = await axios
-      .get("https://fakestoreapi.com/products")
-      .catch((err) => {
-        console.log("err", err);
-      });
-    dispatch({
-      type: "ADDProducts",
-      payload: response.data,
-    });
-  };
+  // dispatch({
+  //   type: "ADDProducts",
+  //   payload: response.data,
+  // });
 
   useEffect(() => {
-    if (state.products.length === 0) {
-      fetchProducts();
-    }
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("https://fakestoreapi.com/products");
+        if (componentMounted) {
+          setData(await response.data);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log("Error ", error);
+      }
+      return () => {
+        componentMounted = false;
+      };
+    };
+    fetchProducts();
   }, []);
+
+  const LoadingSkeleton = () => {
+    return (
+      <>
+        <Skeleton height={350}></Skeleton>
+        <Skeleton height={350}></Skeleton>
+        <Skeleton height={350}></Skeleton>
+        <Skeleton height={350}></Skeleton>
+      </>
+    );
+  };
 
   return (
     <div className="bg-white">
@@ -32,7 +53,11 @@ const ProductsListing = () => {
           Products
         </h2>
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          <ProductsComponent />
+          {loading ? (
+            <LoadingSkeleton />
+          ) : (
+            <ProductsComponent dataProduct={data} />
+          )}
         </div>
       </div>
     </div>
