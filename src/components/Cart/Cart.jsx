@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { delCart, addCart, decrementCart } from "../../redux/action";
 import { useHistory } from "react-router-dom";
@@ -9,39 +9,47 @@ const Cart = () => {
   const dispatch = useDispatch();
   let history = useHistory();
   let totalQty = 0;
-  const [isDisable, setIsDisable] = useState(false);
-  // const [value, setValue] = useState(0);
   const calculeTotal = state.reduce((sum, i) => sum + i.qty * i.price, 0);
   const tempTax = calculeTotal * 0.1;
   const Tax = parseFloat(tempTax.toFixed(2));
   const total = calculeTotal + Tax;
 
-  const handleAdd = (item) => {
-    dispatch(addCart(item));
+  // menambahkan jumlah item dari product
+  const handleAdd = (item, stock) => {
+    console.log(stock);
+    if (item.qty < stock) {
+      dispatch(addCart(item));
+    } else {
+      alert("Maaf Item Yang Dimasukkan Melebihi Stock Yang Tersedia");
+    }
   };
 
+  // mengurangi jumlah item dari product
   const handleDecrement = (item) => {
-    dispatch(decrementCart(item));
+    if (item.qty > 1) {
+      dispatch(decrementCart(item));
+    }
   };
 
+  // Menghapus item dari cart
   const handleClose = (item) => {
     dispatch(delCart(item));
   };
 
-  // const handleValueChange = (item) => {
-  //   setValue(item);
-  // };
-  // console.log(stateStock.length);
+  // button checkout
+  // const handleCheckout = () => {
+
+  // }
+
   const cartItems = (cartItem) => {
     totalQty += cartItem.qty;
-    // for (var count = 0; count < max.length; count++) {
-    //   if (cartItem.id == max[count].id && cartItem.qty == max[count].qty) {
-    //     return setIsDisable(true);
-    //   }
-    // console.log(max[count]);
-    // }
-    // if (cartItem.id == stateStock.id) {
-    // }
+    let stockAll = stateStock.filter((e) => {
+      if (cartItem.id == e.id) {
+        return e.qty;
+      }
+    });
+    let [{ qty }] = stockAll;
+
     return (
       <div
         className="flex p-5 gap-6 border-t-2 border-gray-100 mb-5"
@@ -49,7 +57,7 @@ const Cart = () => {
         <div className="w-1/4 lg:h-60">
           <img src={cartItem.image} className="w-full h-full object-fit" />
         </div>
-        <div className="grid grid-cols-4 w-4/5 gap-12">
+        <div className="grid grid-cols-5 w-4/5 gap-12">
           <div className="col-span-2">
             <span className="text-black-soft font-medium text-xl">
               {cartItem.title}
@@ -64,27 +72,27 @@ const Cart = () => {
           <div className="sm:justify-self-center self-center sm:self-start ">
             <button
               type="button"
-              className=" h-6 w-6 lg:h-7 lg:w-7 text-center "
+              className=" h-6 w-6 lg:h-5 lg:w-5 text-center "
               onClick={() => handleDecrement(cartItem)}>
               -
             </button>
             <input
               type="text"
-              className=" h-6 w-6 lg:h-7 lg:w-7 text-center my-2 sm:mx-1"
+              className=" h-6 w-6 lg:h-5 lg:w-5 text-center my-2 sm:mx-1"
+              defaultValue={cartItem.qty}
               value={cartItem.qty}
               readOnly
             />
             <button
               type="button"
-              className=" h-6 w-6 lg:h-7 lg:w-7 text-center"
-              onClick={() => handleAdd(cartItem)}
-              disabled={isDisable}>
+              className=" h-6 w-6 lg:h-5 lg:w-5 text-center"
+              onClick={() => handleAdd(cartItem, qty)}>
               +
             </button>
           </div>
-          <div>
-            <span>Stock</span>
-            {/* <input className="w-8 h-8" /> */}
+          <div className="items-center">
+            <p>Stock </p>
+            <input className="w-8 h-8 border-2 text-center" value={qty} />
           </div>
           <button
             type="button"
@@ -154,7 +162,9 @@ const Cart = () => {
                   <span>Order Total </span>
                   <span>${total.toFixed(2)}</span>
                 </div>
-                <button className="bg-green-400 py-2 text-white text-lg lg:text-xl font-light rounded-lg">
+                <button
+                  className="bg-green-400 py-2 text-white text-lg lg:text-xl font-light rounded-lg"
+                  onClick={() => console.log("tekan")}>
                   Checkout
                 </button>
               </div>
