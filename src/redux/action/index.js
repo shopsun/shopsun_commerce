@@ -1,3 +1,11 @@
+// Menambahkan Product
+export const addProduct = (product) => {
+  return {
+    type: "ADDPRODUCT",
+    payload: product,
+  };
+};
+
 // Untuk menambahkan product ke cart
 export const addCart = (product) => {
   return {
