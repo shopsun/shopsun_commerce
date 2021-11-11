@@ -5,10 +5,8 @@ const handleCheckOut = (state = products, action) => {
   switch (action.type) {
     case "CHECKOUTCHART":
       return { ...products, product: product };
-      break;
     default:
       return state;
-      break;
   }
 };
 

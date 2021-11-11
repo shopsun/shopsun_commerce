@@ -44,7 +44,7 @@ function LoginForm() {
       localStorage.setItem("token", token);
       history.push(`/`);
     } else {
-      setError("Details do not match !");
+      setError("username and password do not match !");
     }
   };
 
@@ -90,13 +90,20 @@ function LoginForm() {
             />
           </div>
 
-          <div className="flex justify-center items-center mt-6">
+          <div className="flex flex-col justify-center items-center mt-6">
             <button
               type="submit"
               className="bg-blue-pastel group w-full lg:w-1/3 md:w-2/3 py-2 px-4 text-sm text-white rounded-md border 
                             border-blue-pastel leading-5 font-medium hover:bg-blue-pastel focus:outline-none focus:border-blue-pastel 
-                            focus:shadow-outline-blue-pastel active bg-blue-pastel active:outline-none transition duration-150 ease-in-out">
+                            focus:shadow-outline-blue-pastel active:outline-none transition duration-150 ease-in-out">
               Sign In
+            </button>
+            <button
+              type="button"
+              className="bg-white group w-full lg:w-1/3 md:w-2/3 py-2 px-4 text-sm text-blue-pastel rounded-md border border-blue-pastel leading-5 font-medium focus:border-blue-pastel 
+                            focus:shadow-outline-blue-pastel active:outline-none transition duration-150 ease-in-out mt-4"
+              onClick={() => history.push(`/product`)}>
+              Back To Home
             </button>
           </div>
         </form>

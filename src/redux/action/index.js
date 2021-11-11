@@ -36,6 +36,14 @@ export const updateStock = (products) => {
   };
 };
 
+// update Stock From Admin
+export const updateStockAdmin = (products) => {
+  return {
+    type: "UPDATESTOCKFROMADMIN",
+    payload: products,
+  };
+};
+
 // Untuk mengurangi qty pada product dari cart
 export const decrementCart = (product) => {
   return {

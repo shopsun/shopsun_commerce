@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addCart } from "../../redux/action";
@@ -6,7 +6,6 @@ import StarRating from "react-star-rating-component";
 
 const ProductDetails = () => {
   const state = useSelector((state) => state.handleProduct.product);
-  const stateStock = useSelector((state) => state.handleCheckOut.product);
   const history = useHistory();
   const { productId } = useParams();
   const dispatch = useDispatch();
@@ -17,6 +16,22 @@ const ProductDetails = () => {
 
   return (
     <div className="max-w-4xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8 ">
+      <button
+        className="text-green-500 ml-5 "
+        onClick={() => history.push(`/product`)}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-7 w-7 inline-block "
+          viewBox="0 0 20 20"
+          fill="currentColor">
+          <path
+            fillRule="evenodd"
+            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+            clipRule="evenodd"
+          />
+        </svg>{" "}
+        <span className=" align-middle text-2xl font-medium">Back</span>
+      </button>
       {state
         .filter((e) => {
           if (e.id == productId) {
