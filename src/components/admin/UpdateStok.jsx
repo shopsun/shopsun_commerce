@@ -1,12 +1,10 @@
-import React , {useState , useEffect} from "react";
+import React  from "react";
 import { useSelector, useDispatch } from 'react-redux'
 
 function UpdateStok() {
   const updateStock = useSelector((state) => state.handleProduct.product);
   const dispatch = useDispatch();
 // console.log(updateStock) 
-
-const [products, setProducts] = useState();
 
   return (
     <div className="bg-white">
@@ -17,7 +15,7 @@ const [products, setProducts] = useState();
           <div className="table-responsive">
             <table class="border-collapse border border-black-soft-800 ...">
               <thead class="table-dark">
-                <tr class="border border-black-soft-600 p-2 bg-black-soft text-sm text-white ...">
+                <tr class="border border-black-soft-600 p-2 bg-black-soft text-sm text-white h-5 w-5 ...">
                   <th>Product</th>
                   <th>Stok</th>
                   <th>Action</th>
@@ -25,18 +23,16 @@ const [products, setProducts] = useState();
               </thead>
               <tbody>
               {updateStock.map(products => (
-                <tr class="border border-black-soft-600 p-2 ..." key={products.id}>
+                <tr key={products.id} class="border border-black-soft-600 p-2 h-5 w-5 ...">
                   <td>
                       {products.title}
                       <td />
-                      {products.description}
-                      <td />
                       {products.category} 
                   </td>
-                  <td class="border border-black-soft-600 p-2 ...">
+                  <td class="border border-black-soft-600 p-2 h-5 w-5 ...">
                   <input
                     type="text"
-                    className={`form-control border border-black-soft-600 ...`}
+                    className={`form-control border border-black-soft-600 p-2 h-7 w-25 ...`}
                     value={products.qty}
                   />
                 </td>

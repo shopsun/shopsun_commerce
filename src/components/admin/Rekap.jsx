@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useSelector, useDispatch } from 'react-redux'
 
 function Rekap() {
-    const [products, setProducts] = useState([])
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((response) => response.json())
-      .then((data) => setProducts(data.slice(0, 10)));
-  }, []);
-
-  
+  const rekap = useSelector((state) => state.handleCheckOut.product);
+  const dispatch = useDispatch();
+// console.log(updateStock) 
+const calculeTotal = rekap.reduce((sum, i) => sum + i.qty * i.price, 0);
 
   return (
     <div className="bg-white">
@@ -28,20 +24,34 @@ function Rekap() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((products, idx) => (
-                  <tr class="border border-black-soft-600 p-2 ...">
+              {rekap.map(products => (
+                  <tr key={products.id} class="border border-black-soft-600 p-2 ...">
                     <td>
                         {products.title}
                         <td />
                         {products.category}
                     </td>
-                    <td class="border border-black-soft-600 p-2 ..." >{products.price}</td>
+
+                    <td class="border border-black-soft-600 p-2 ..." >
+                    $ {products.price}
+                    </td>
+
+                    <td class="border border-black-soft-600 p-2 ..." >
+                      {products.qty}
+                    </td>
+
+                    <td class="border border-black-soft-600 p-2 ..." >
+                      $ {(products.price * products.qty).toFixed(2)}
+                    </td>
                   </tr>
                 ))}
-                <td>
-                    TOTAL PENDAPATAN
-                </td>
               </tbody>
+              <tfoot>
+                <tr>
+                  <th>Total Pendapatan: </th>
+                  <th>$ {calculeTotal.toFixed(2)}</th>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
