@@ -1,22 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { delCart, addCart, decrementCart } from "../../redux/action";
+import {
+  delCart,
+  addCart,
+  decrementCart,
+  checkOutChart,
+  removeCart,
+  updateStock,
+} from "../../redux/action";
 import { useHistory } from "react-router-dom";
 
 const Cart = () => {
   const state = useSelector((state) => state.handleCart);
   const stateStock = useSelector((state) => state.handleProduct.product);
+  const stateCheckout = useSelector((state) => state.handleCheckOut.product);
+  const [Stock, setStock] = useState();
   const dispatch = useDispatch();
   let history = useHistory();
-  let totalQty = 0;
   const calculeTotal = state.reduce((sum, i) => sum + i.qty * i.price, 0);
   const tempTax = calculeTotal * 0.1;
   const Tax = parseFloat(tempTax.toFixed(2));
   const total = calculeTotal + Tax;
+  let totalQty = 0;
 
   // menambahkan jumlah item dari product
   const handleAdd = (item, stock) => {
-    console.log(stock);
     if (item.qty < stock) {
       dispatch(addCart(item));
     } else {
@@ -37,9 +45,12 @@ const Cart = () => {
   };
 
   // button checkout
-  // const handleCheckout = () => {
-
-  // }
+  const handleButtonCheckOut = (product) => {
+    dispatch(checkOutChart(product));
+    dispatch(updateStock(product));
+    dispatch(removeCart());
+    history.push("/product");
+  };
 
   const cartItems = (cartItem) => {
     totalQty += cartItem.qty;
@@ -164,7 +175,7 @@ const Cart = () => {
                 </div>
                 <button
                   className="bg-green-400 py-2 text-white text-lg lg:text-xl font-light rounded-lg"
-                  onClick={() => console.log("tekan")}>
+                  onClick={() => handleButtonCheckOut(state)}>
                   Checkout
                 </button>
               </div>

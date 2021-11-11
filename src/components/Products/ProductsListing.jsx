@@ -14,35 +14,45 @@ const ProductsListing = () => {
   //   type: "ADDProducts",
   //   payload: response.data,
   // });
-
+  // console.log("state : ", state);
+  if (state === undefined) {
+    console.log("kosong");
+  } else {
+    console.log("gk kosong");
+  }
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        await axios
-          .get("https://fakestoreapi.com/products")
-          .then((response) => {
-            // console.log(response.data);
-            const objectData = [];
-            response.data.forEach((element) => {
-              // console.log(element);
-              let newProduct = { ...element, qty: 20 };
-              objectData.push(newProduct);
-            });
-            // console.log(objectData);
-            dispatch(addProduct(objectData));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } catch (error) {
-        console.log("Error ", error);
-      }
-      return () => {
-        componentMounted = false;
-      };
-    };
-    fetchProducts();
+    if (state === undefined) {
+      fetchProducts();
+    }
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      await axios
+        .get("https://fakestoreapi.com/products")
+        .then((response) => {
+          // console.log(response.data);
+          const objectData = [];
+          response.data.forEach((element) => {
+            // console.log(element);
+            let newProduct = { ...element, qty: 20 };
+            objectData.push(newProduct);
+          });
+          // console.log(objectData);
+          dispatch(addProduct(objectData));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log("Error ", error);
+    }
+    return () => {
+      componentMounted = false;
+    };
+  };
+
+  console.log(state);
 
   const LoadingSkeleton = () => {
     return (
@@ -62,11 +72,7 @@ const ProductsListing = () => {
           Products
         </h2>
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {state ? (
-            <ProductsComponent dataProduct={state} />
-          ) : (
-            <LoadingSkeleton />
-          )}
+          {state ? <ProductsComponent /> : <LoadingSkeleton />}
         </div>
       </div>
     </div>
