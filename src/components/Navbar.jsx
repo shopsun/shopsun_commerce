@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Transition } from "@headlessui/react";
 import { USER_TOKEN } from "../../src/token";
@@ -20,23 +20,6 @@ function Navbar() {
     setIsOpen(!isOpen);
   };
 
-  // useEffect(() => {
-  //   (() => {
-  //     const token = localStorage.getItem('token');
-  //     debugger
-  //     if (token === USER_TOKEN) {
-  //       setIsUser(true);
-  //       setIsAdmin(false);
-  //     } else if (token === ADMIN_TOKEN) {
-  //       setIsUser(false);
-  //       setIsAdmin(true);
-  //     } else {
-  //       setIsUser(false);
-  //       setIsAdmin(false);
-  //     }
-  //   })();
-  // }, [hotReload]);
-
   return (
     <nav className="bg-white md:w-5/6 md:mx-auto rounded-xl z-10 md:mt-5 sticky">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,17 +33,32 @@ function Navbar() {
             <div className="hidden md:block font-quicksand text-blue-pastel">
               <ul className="flex ml-10 items-center space-x-4">
                 {/* Tinggal ganti sesuai pathname Home */}
-                <li>
-                  <button
-                    className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
-                      location.pathname === "/product"
-                        ? "text-white bg-blue-pastel scale-110"
-                        : ""
-                    }`}
-                    onClick={() => history.push("/product")}>
-                    Home
-                  </button>
-                </li>
+                {token === ADMIN_TOKEN && (
+                  <li>
+                    <button
+                      className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
+                        location.pathname === "/update"
+                          ? "text-white bg-blue-pastel scale-110"
+                          : ""
+                      }`}
+                      onClick={() => history.push("/update")}>
+                      Update Stock
+                    </button>
+                  </li>
+                )}
+                {token === USER_TOKEN && (
+                  <li>
+                    <button
+                      className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
+                        location.pathname === "/product"
+                          ? "text-white bg-blue-pastel scale-110"
+                          : ""
+                      }`}
+                      onClick={() => history.push("/product")}>
+                      Home
+                    </button>
+                  </li>
+                )}
                 &nbsp;
                 {/* Tinggal ganti sesuai pathname Rekap Penjualan */}
                 {token === ADMIN_TOKEN && (

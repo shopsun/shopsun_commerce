@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   delCart,
@@ -13,8 +13,6 @@ import { useHistory } from "react-router-dom";
 const Cart = () => {
   const state = useSelector((state) => state.handleCart);
   const stateStock = useSelector((state) => state.handleProduct.product);
-  const stateCheckout = useSelector((state) => state.handleCheckOut.product);
-  const [Stock, setStock] = useState();
   const dispatch = useDispatch();
   let history = useHistory();
   const calculeTotal = state.reduce((sum, i) => sum + i.qty * i.price, 0);
