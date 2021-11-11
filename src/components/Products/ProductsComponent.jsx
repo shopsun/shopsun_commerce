@@ -1,12 +1,11 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { addCart } from "../../redux/action";
 
-const ProductsComponent = ({ dataProduct }) => {
-  // const products = useSelector((state) => state.products);
+const ProductsComponent = () => {
+  const products = useSelector((state) => state.handleProduct.product);
   const dispatch = useDispatch();
-  const products = dataProduct;
   const history = useHistory();
 
   const addProduct = (product) => {

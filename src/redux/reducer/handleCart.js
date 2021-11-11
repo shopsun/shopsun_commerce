@@ -31,7 +31,9 @@ const handleCart = (state = cart, action) => {
       const exist1 = state.find((x) => x.id === product.id);
       return state.filter((x) => x.id !== exist1.id);
       break;
-
+    case "REMOVECHART":
+      return (state = []);
+      break;
     default:
       return state;
       break;
