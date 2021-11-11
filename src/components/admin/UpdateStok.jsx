@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React , {useState , useEffect} from "react";
+import { useSelector, useDispatch } from 'react-redux'
 
-function Rekap() {
-    const [products, setProducts] = useState([])
+function UpdateStok() {
+  const updateStock = useSelector((state) => state.handleProduct.product);
+  const dispatch = useDispatch();
+// console.log(updateStock) 
 
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((response) => response.json())
-      .then((data) => setProducts(data.slice(0, 10)));
-  }, []);
-
-  
+const [products, setProducts] = useState();
 
   return (
     <div className="bg-white">
@@ -27,33 +24,34 @@ function Rekap() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((products, idx) => (
-                  <tr class="border border-black-soft-600 p-2 ...">
-                    <td>
-                        {products.title}
-                        <td />
-                        {products.description}
-                        <td />
-                        {products.category}
-                    </td>
-                    <td class="border border-black-soft-600 p-2 ...">
-                    <input
-                      type="number"
-                      className={`form-control border border-black-soft-600 ...`}
-                    />
+              {updateStock.map(products => (
+                <tr class="border border-black-soft-600 p-2 ..." key={products.id}>
+                  <td>
+                      {products.title}
+                      <td />
+                      {products.description}
+                      <td />
+                      {products.category} 
                   </td>
                   <td class="border border-black-soft-600 p-2 ...">
-                    <button
-                      className={`bg-blue-pastel group w-full py-2 px-4 text-sm text-white rounded-md border 
-                      border-blue-pastel leading-5 font-medium hover:bg-blue-pastel focus:outline-none focus:border-blue-pastel 
-                      focus:shadow-outline-blue-pastel active bg-blue-pastel active:outline-none transition duration-150 ease-in-out`}
-                      type="button"
-                    >
-                      Update
-                    </button>
-                  </td>
-                  </tr>
-                ))}
+                  <input
+                    type="text"
+                    className={`form-control border border-black-soft-600 ...`}
+                    value={products.qty}
+                  />
+                </td>
+                <td class="border border-black-soft-600 p-2 ...">
+                  <button
+                    className={`bg-blue-pastel group w-full py-2 px-4 text-sm text-white rounded-md border 
+                    border-blue-pastel leading-5 font-medium hover:bg-blue-pastel focus:outline-none focus:border-blue-pastel 
+                    focus:shadow-outline-blue-pastel active bg-blue-pastel active:outline-none transition duration-150 ease-in-out`}
+                    type="button"
+                  >
+                    Update
+                  </button>
+                </td>
+              </tr>
+              ))}
               </tbody>
             </table>
           </div>
@@ -62,4 +60,4 @@ function Rekap() {
   );
 }
 
-export default Rekap;
+export default UpdateStok;
