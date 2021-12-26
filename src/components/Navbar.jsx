@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Transition } from "@headlessui/react";
-import { USER_TOKEN } from "../../src/token";
+// import { USER_TOKEN } from "../../src/token";
 import { ADMIN_TOKEN } from "../../src/token";
 import { useSelector } from "react-redux";
 
 function Navbar() {
+  const stateToken = useSelector((state) => state.handleToken);
   const token = localStorage.getItem("token");
   const [isAdmin, setIsAdmin] = useState(false);
   const [isUser, setIsUser] = useState(false);
@@ -46,7 +47,7 @@ function Navbar() {
                     </button>
                   </li>
                 )}
-                {token === USER_TOKEN && (
+                {token === stateToken && (
                   <li>
                     <button
                       className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold ${
@@ -76,7 +77,7 @@ function Navbar() {
                 )}
                 &nbsp;
                 {/* Tinggal ganti sesuai pathname Login */}
-                {token === USER_TOKEN || token === ADMIN_TOKEN ? (
+                {token === stateToken || token === ADMIN_TOKEN ? (
                   <li>
                     <button
                       className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}
@@ -106,7 +107,7 @@ function Navbar() {
                 )}
                 &nbsp;
                 {/* Tinggal ganti sesuai pathname Cart */}
-                {token === USER_TOKEN && (
+                {token === stateToken && (
                   <li>
                     <button
                       className={` inline-flex items-center transition-color transition-transform transform hover:scale-110 px-2 py-2 text-sm hover:bg-blue-pastel rounded-full hover:text-white font-bold`}
@@ -207,7 +208,7 @@ function Navbar() {
               </li>
               &nbsp;
               {/* Tinggal ganti sesuai pathname Cart */}
-              {token === USER_TOKEN && (
+              {token === stateToken && (
                 <li>
                   <button
                     className={`hover:bg-blue-pastel hover:text-white transition-colors duration-300  px-3 py-2 rounded-md text-base font-medium w-full ${
@@ -222,7 +223,7 @@ function Navbar() {
               )}
               &nbsp;
               {/* Tinggal ganti sesuai pathname Login */}
-              {isAdmin || isUser ? (
+              {token === stateToken || token === ADMIN_TOKEN ? (
                 <li>
                   <button
                     className={` transition-color transition-transform transform hover:scale-110 px-3 py-2 text-sm hover:bg-blue-pastel rounded-2xl hover:text-white font-bold `}

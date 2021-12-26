@@ -28,6 +28,13 @@ export const removeCart = () => {
   };
 };
 
+export const TokenUser = (user) =>{
+  return{
+    type:"ADDTOKENUSER",
+    payload:user
+  }
+}
+
 // updateStock
 export const updateStock = (products) => {
   return {
