@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { TokenUser } from "../redux/action";
 
 function LoginForm() {
   const history = useHistory();
   const [user, setUser] = useState({ username: "" });
   const [error, setError] = useState("");
   const [details, setDetails] = useState({ username: "", password: "" });
+  const dispatch = useDispatch();
 
   const ADMIN_TOKEN = "452146856344562";
 
@@ -41,6 +44,7 @@ function LoginForm() {
       });
 
       const token = res.data.token;
+      dispatch(TokenUser(token));
       localStorage.setItem("token", token);
       history.push(`/`);
     } else {
