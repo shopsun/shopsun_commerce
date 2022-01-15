@@ -8,7 +8,12 @@ import {
   removeCart,
   updateStock,
 } from "../../redux/action";
+import axios from "axios";
 import { useHistory } from "react-router-dom";
+import StripeCheckout from "react-stripe-checkout";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Cart = () => {
   const state = useSelector((state) => state.handleCart);
@@ -20,6 +25,30 @@ const Cart = () => {
   const Tax = parseFloat(tempTax.toFixed(2));
   const total = calculeTotal + Tax;
   let totalQty = 0;
+  toast.configure();
+
+  const handleToken = async (token) => {
+    // console.log(token, address)
+    let totalInt = parseInt(parseFloat(total.toFixed(2)))
+    let product = {
+      price:totalInt,
+    }
+    console.log(typeof product.price)
+    await axios.post('https://u9wbs.sse.codesandbox.io/checkout',{
+      token,
+      product
+    }).then(res => {
+      const {status} = res.data
+      if(status === 'success'){
+        toast('Success! Check emails for details',
+        {type: 'success'})
+        handleButtonCheckOut(state)
+      }else{
+        toast('Something went wrong',
+        {type: 'error'})
+      }
+    }).catch(err => console.log(err))
+  }
 
   // menambahkan jumlah item dari product
   const handleAdd = (item, stock) => {
@@ -44,6 +73,7 @@ const Cart = () => {
 
   // button checkout
   const handleButtonCheckOut = (product) => {
+    console.log(product)
     dispatch(checkOutChart(product));
     dispatch(updateStock(product));
     dispatch(removeCart());
@@ -171,11 +201,18 @@ const Cart = () => {
                   <span>Order Total </span>
                   <span>${total.toFixed(2)}</span>
                 </div>
-                <button
-                  className="bg-green-400 py-2 text-white text-lg lg:text-xl font-light rounded-lg"
-                  onClick={() => handleButtonCheckOut(state)}>
-                  Checkout
-                </button>
+                  <StripeCheckout stripeKey="pk_test_51KH6cGCXMLyyOwvytmRIHPlrrJtdr591meUA9zVlBMJufDQF5HL705Z71q4LeJmrhCRrA4lICZFKp0Ti2TcQmX6F0061M3Ljwd"
+                  token={handleToken}
+                  billingAddress
+                  shippingAddress
+                  name="Payment"
+                  >
+                    <button
+                      className="bg-green-400 py-2 w-full text-white text-lg lg:text-xl font-light rounded-lg"
+                      >
+                      Checkout
+                    </button>
+                  </StripeCheckout>
               </div>
             </div>
           </div>
